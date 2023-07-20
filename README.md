@@ -1,4 +1,4 @@
-![image](https://github.com/SOELexicon/ComfyUI-LexMSDBNodes/assets/4205001/cf3051e0-e206-42e4-9f72-d7330221ca92)# MSSQL Interaction Utility
+# MSSQL Interaction Utility
 
 This repository contains a set of Python classes designed to interact with an MSSQL server. These classes facilitate operations such as connecting to the server, reading configuration details, querying the database, and performing CRUD operations on database tables.
 
