@@ -66,7 +66,7 @@ GO
 To use this repository, import the necessary classes into your Python script and instantiate them as needed. Each class has specific methods to perform different operations, which can be used as per the requirements of your project.
 
 Here is a general example of what the ComfyUI\custom_nodes\ComfyUI-LexMSDBNodes\nodes\config.ini file might look like:
-
+````
 [MSSQL]
 server = your_server
 database = your_database
@@ -74,6 +74,7 @@ username = your_username
 password = your_password
 driver = {SQL Server Native Client 11.0}
 integrated_security = False
+````
 ## Contributing
 
 Contributions to the project are welcome. To contribute:
