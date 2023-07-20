@@ -21,7 +21,7 @@ class MSSQLFn:
         for table in tables:
             cursor.execute(f"SELECT * FROM {table}")
             columns = {column[0]: column[1] for column in cursor.description}
-            print(columns)
+           # print(columns)
 
             table_info[table] = columns
         fields = table_info['txt2img']
@@ -45,7 +45,7 @@ class MSSQLFn:
             else:
                 input_type = "STRING"  # default type
             field_types[field] = input_type
-        print(field_types)
+      #  print(field_types)
         return tuple(field_types.values())
     
     @staticmethod
@@ -67,7 +67,7 @@ class MSSQLFn:
             else:
                 input_type = "STRING"  # default type
             field_types[field] = input_type
-        print(field_types)
+      #  print(field_types)
         return tuple(field_types.keys())
     @staticmethod
     def readConfig():
@@ -118,6 +118,7 @@ class MSSQLQueryNode:
         cursor.execute(query)
         result = cursor.fetchall()
         return (str(result),)
+    
 conn = None
 connection_string = ''
 self ={"conn":conn,"connection_string":connection_string}   
@@ -170,56 +171,56 @@ class MSSqlTableNode:
     CATEGORY = "LexNode.MSSQL"
 
     
-def execute_query(self, **kwargs):
-    global conn
-    cursor = conn.cursor()
-    
-    # Set the table name to the value of the "Table" field and remove it from kwargs
-    self.table_name = kwargs.pop('Table', self.table_name)
-    if kwargs.get('id', None) == 0:  # Check if id is 0
-        # Remove 'id' from kwargs
-        kwargs.pop('id', None)
+    def execute_query(self, **kwargs):
+        global conn
+        cursor = conn.cursor()
         
-        # Prepare the SQL statement for inserting a new record
-        kwargs['DateAdded'] = datetime.datetime.now()  # Add current datetime
-        columns = ', '.join(kwargs.keys())
-        placeholders = ', '.join('?' for _ in kwargs)
-        sql = f"INSERT INTO {self.table_name} ({columns}) VALUES ({placeholders})"
-     #   print (sql)
-        values = []
-        for value in kwargs.values():
-            if isinstance(value, torch.Tensor):  # Check if the value is a PyTorch tensor
-                # Convert the tensor to a numpy array
-                i = 255. * value[0].cpu().numpy()
-                img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
-                byte_array = io.BytesIO()
-                img.save(byte_array, format='JPEG')
-                value = pyodbc.Binary(byte_array.getvalue())
-            elif isinstance(value, datetime.datetime):  # Check if the value is a datetime object
-                value = value.strftime('%Y-%m-%d %H:%M:%S')  # Format the datetime object to string
-            values.append(value)
+        # Set the table name to the value of the "Table" field and remove it from kwargs
+        self.table_name = kwargs.pop('Table', self.table_name)
+        if kwargs.get('id', None) == 0:  # Check if id is 0
+            # Remove 'id' from kwargs
+            kwargs.pop('id', None)
+            
+            # Prepare the SQL statement for inserting a new record
+            kwargs['DateAdded'] = datetime.datetime.now()  # Add current datetime
+            columns = ', '.join(kwargs.keys())
+            placeholders = ', '.join('?' for _ in kwargs)
+            sql = f"INSERT INTO {self.table_name} ({columns}) VALUES ({placeholders})"
+        #   print (sql)
+            values = []
+            for value in kwargs.values():
+                if isinstance(value, torch.Tensor):  # Check if the value is a PyTorch tensor
+                    # Convert the tensor to a numpy array
+                    i = 255. * value[0].cpu().numpy()
+                    img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
+                    byte_array = io.BytesIO()
+                    img.save(byte_array, format='JPEG')
+                    value = pyodbc.Binary(byte_array.getvalue())
+                elif isinstance(value, datetime.datetime):  # Check if the value is a datetime object
+                    value = value.strftime('%Y-%m-%d %H:%M:%S')  # Format the datetime object to string
+                values.append(value)
 
-   #     print (tuple(values))
-        cursor.execute(sql, tuple(values))
+    #     print (tuple(values))
+            cursor.execute(sql, tuple(values))
 
-        conn.commit()  # Don't forget to commit the changes
-        cursor.execute("SELECT @@IDENTITY AS 'Identity'")
-        id_of_new_row = cursor.fetchone()[0]
-        return ["Insert operation completed.", id_of_new_row]
-    else:
-        for field, value in kwargs.items():
-            if field in table_info[self.table_name]:  # Ensure the field exists in the table
-                if isinstance(value, torch.Tensor):  # Check if the value is a numpy array
-                    # Ensure the numpy array can be represented as an image
-                        i = 255. * value[0].cpu().numpy()
-                        img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
-                        # Convert the numpy array to a byte array
-                        byte_arr = io.BytesIO()
-                        img.save(byte_arr, format='JPEG')
-                        value = pyodbc.Binary(byte_arr.getvalue())
-                cursor.execute(f"UPDATE {self.table_name} SET {field} = ? WHERE {field} = ?", (value, value))
-        conn.commit()  # Don't forget to commit the changes
-        return ["Update operation completed.", kwargs.get('id')]
+            conn.commit()  # Don't forget to commit the changes
+            cursor.execute("SELECT @@IDENTITY AS 'Identity'")
+            id_of_new_row = cursor.fetchone()[0]
+            return ["Insert operation completed.", id_of_new_row]
+        else:
+            for field, value in kwargs.items():
+                if field in table_info[self.table_name]:  # Ensure the field exists in the table
+                    if isinstance(value, torch.Tensor):  # Check if the value is a numpy array
+                        # Ensure the numpy array can be represented as an image
+                            i = 255. * value[0].cpu().numpy()
+                            img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
+                            # Convert the numpy array to a byte array
+                            byte_arr = io.BytesIO()
+                            img.save(byte_arr, format='JPEG')
+                            value = pyodbc.Binary(byte_arr.getvalue())
+                    cursor.execute(f"UPDATE {self.table_name} SET {field} = ? WHERE {field} = ?", (value, value))
+            conn.commit()  # Don't forget to commit the changes
+            return ["Update operation completed.", kwargs.get('id')]
 
 
 class MSSqlSelectNode:
