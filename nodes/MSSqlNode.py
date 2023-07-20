@@ -305,8 +305,6 @@ class MSSqlNode:
         return result
 
 NODE_CLASS_MAPPINGS = {
-    "MSSQLQuery": MSSQLQueryNode,
-    "MSSqlNode": MSSqlNode,
     "MSSqlTableNode": MSSqlTableNode,
     "MSSqlSelectNode": MSSqlSelectNode,
 }
