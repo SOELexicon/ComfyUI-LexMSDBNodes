@@ -1,14 +1,16 @@
-# MSSQL Interaction Utility
+![image](https://github.com/SOELexicon/ComfyUI-LexMSDBNodes/assets/4205001/cf3051e0-e206-42e4-9f72-d7330221ca92)# MSSQL Interaction Utility
 
 This repository contains a set of Python classes designed to interact with an MSSQL server. These classes facilitate operations such as connecting to the server, reading configuration details, querying the database, and performing CRUD operations on database tables.
 
 Please note that this is still in progress and extended functionailty wilk be added all the time.
 Currently the table is hardcoded in the MSSQLNode.py folder and its set to txt2img you can change that table as much as you like and it will detect the fields on reload
+![image](https://github.com/SOELexicon/ComfyUI-LexMSDBNodes/assets/4205001/737b51bf-5d11-4080-8795-6611da4c523f)
 
 
 ## Key Features
 
-- **Flexibility**: A wide range of SQL operations can be performed, from basic queries to more complex insert and update operations.
+- **Flexibility**: 	A wide range of SQL operations can be performed, from basic queries to more complex insert and update operations.
+			The Nodes inputs will automatically show based on the collumns and those collumns types in the table
 - **Usability**: The project includes classes to manage database connection and perform specific tasks such as executing a query or managing table records.
 - **Compatibility**: It incorporates additional libraries like PyODBC, NumPy, PyTorch, and OpenCV, bridging the gap between database management and data science.
 - **Modularity**: The project is designed to be modular, with different classes handling different aspects of the database interaction.
