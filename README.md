@@ -6,34 +6,7 @@ Please note that this is still in progress and extended functionailty will be ad
 Currently the table is hardcoded in the MSSQLNode.py folder and its set to txt2img you can change that table as much as you like and it will detect the fields on reload
 ![image](https://github.com/SOELexicon/ComfyUI-LexMSDBNodes/assets/4205001/737b51bf-5d11-4080-8795-6611da4c523f)
 
-## Block Diagram
-````
-+-------------------+     +---------------------+
-| Configuration     |     | Database Connection|
-| Manager           |     | Manager            |
-+-------------------+     +---------------------+
-        ^                         ^
-        |                         |
-+-------------------+             |
-| Query Execution   |<------------+
-| Engine            |
-+-------------------+
-        ^
-        |
-+-------------------+
-| Node Classes      |
-+-------------------+
-        ^
-        |
-+-------------------+     +---------------------+
-| Node Factory      |     | Node Exception      |
-+-------------------+     | Handler             |
-        ^                 +---------------------+
-        |
-+-------------------+
-| Node Interface    |
-+-------------------+
-````
+
 ## Key Features
 
 - **Flexibility**: 	A wide range of SQL operations can be performed, from basic queries to more complex insert and update operations.
