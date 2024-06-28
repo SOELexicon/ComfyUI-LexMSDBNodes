@@ -10,6 +10,6 @@ Repository = "https://github.com/SOELexicon/ComfyUI-LexMSDBNodes"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = "@lexicon"
+PublisherId = "lexicon"
 DisplayName = "ComfyUI-LexMSDBNodes"
 Icon = ""
